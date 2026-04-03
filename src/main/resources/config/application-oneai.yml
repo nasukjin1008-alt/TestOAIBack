@@ -1,0 +1,28 @@
+server:
+  servlet:
+    context-path: /oneai
+
+spring:
+  messages:
+    basename: i18n/general,i18n/exception,i18n/history
+    encoding: UTF-8
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    elasticsearch:
+      enabled: false
+
+mybatis:
+  check-config-location: true
+  config-location: classpath:config/mybatis-config.xml
+  mapper-locations: mapper/**/*.xml
+  executor-type: reuse
+  configuration:
+    cache-enabled: false
+    local-cache-scope: statement

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+    <appenders>
+        <Console name="eclipseConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-5level][%d{yyyy-MM-dd HH:mm:ss}]%msg%n" />
+        </Console>
+    </appenders>
+
+    <loggers>
+        <root level="info" additivity="false">
+            <appender-ref ref="eclipseConsole" />
+        </root>
+
+        <logger name="KlagoCustomLogger" level="debug" additivity="false">
+            <appender-ref ref="eclipseConsole" />
+        </logger>
+        <logger name="jdbc.connection" level="OFF" />
+        <logger name="jdbc.audit" level="OFF" />
+        <logger name="jdbc.resultset" level="OFF"/>
+        <logger name="jdbc.resultsettable" level="OFF"/>
+        <logger name="jdbc.sqlonly" level="OFF"/>
+    </loggers>
+</configuration>

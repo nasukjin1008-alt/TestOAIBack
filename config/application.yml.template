@@ -1,0 +1,61 @@
+# application.yml - 배포 환경 설정 (이 파일을 복사하여 application.yml로 사용)
+# 민감 정보는 ENC(...)로 Jasypt 암호화 적용
+
+server:
+  port: 80
+  compression:
+    enabled: true
+  servlet:
+    context-path: /oneai
+    encoding:
+      force: true
+      charset: UTF-8
+
+spring:
+  profiles:
+    active: default
+  ecm:
+    datasource:
+      hikari:
+        maximum-pool-size: 4
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://<DB_HOST>:<DB_PORT>
+        username: <DB_USER>
+        password: ENC(<ENCRYPTED_PASSWORD>)
+  servlet:
+    multipart:
+      maxFileSize: 1024MB
+      maxRequestSize: 1024MB
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+
+mybatis:
+  check-config-location: true
+  config-location: classpath:config/mybatis-config.xml
+  mapper-locations: mapper/**/*.xml
+
+logging:
+  config: ./log4j2.xml
+
+Klago:
+  redis:
+    ip: <REDIS_HOST>
+    port: <REDIS_PORT>
+    password: ENC(<ENCRYPTED_PASSWORD>)
+  Sign:
+    Value: <SIGN_VALUE>
+  kafka:
+    topic:
+      eventSend: event01A01
+  elasticsearch:
+    ip: <ES_HOST>
+    port: <ES_PORT>
+    ssl: true
+    username: <ES_USER>
+    password: ENC(<ENCRYPTED_PASSWORD>)

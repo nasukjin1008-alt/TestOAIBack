@@ -1,0 +1,58 @@
+variables:
+    MODULE: 'oneai'
+
+stages:
+    - build
+    - devqa
+    - sqa
+    - master
+
+build:
+    stage: build
+    only:
+        - devqa
+        - sqa
+        - master
+    script:
+        - date
+        - sh ./gradlew build
+        - cd ./build/libs/
+        - cp $(ls -lt | grep -v "합계" | head -1 | awk '{print $9}') ${SPRINGBOOT_IMAGE_BUILD_PATH}/${CI_COMMIT_REF_NAME}/${MODULE}.jar
+    tags:
+        - ci
+
+devqa:
+    stage: devqa
+    only:
+        - devqa
+    script:
+        - date
+        - cd ${SPRINGBOOT_IMAGE_BUILD_PATH}/${CI_COMMIT_REF_NAME}
+        - docker build -t ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot-devqa:latest -f ${MODULE}.dockerfile .
+        - docker push ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot-devqa:latest
+    tags:
+        - ci
+
+sqa:
+    stage: sqa
+    only:
+        - sqa
+    script:
+        - date
+        - cd ${SPRINGBOOT_IMAGE_BUILD_PATH}/${CI_COMMIT_REF_NAME}
+        - docker build -t ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot-sqa:latest -f ${MODULE}.dockerfile .
+        - docker push ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot-sqa:latest
+    tags:
+        - ci
+
+master:
+    stage: master
+    only:
+        - master
+    script:
+        - date
+        - cd ${SPRINGBOOT_IMAGE_BUILD_PATH}/${CI_COMMIT_REF_NAME}
+        - docker build -t ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot:latest -f ${MODULE}.dockerfile .
+        - docker push ${DOCKER_REGISTRY}/deploy/dz/tomcat-${MODULE}-boot:latest
+    tags:
+        - ci

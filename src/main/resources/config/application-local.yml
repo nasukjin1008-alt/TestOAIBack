@@ -1,0 +1,25 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /oneai
+    encoding:
+      force: true
+      charset: UTF-8
+
+spring:
+  ecm:
+    datasource:
+      hikari:
+        maximum-pool-size: 1
+        driver-class-name: org.mariadb.jdbc.Driver
+        jdbc-url: jdbc:mariadb://127.0.0.1:3306
+        username: root
+        password: root
+
+mybatis:
+  check-config-location: true
+  config-location: classpath:config/mybatis-config.xml
+  mapper-locations: mapper/**/*.xml
+
+logging:
+  config: classpath:log4j2.xml
